@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jun-backbone-model</title>
+</head>
+
+<body>
+</body>
+<script src="./lib/jquery.min.js"></script>
+<script src="./lib/underscore-min.js"></script>
+<script src="./lib/backbone-min.js"></script>
+<script>
+  Man = Backbone.Model.extend({
+    initialize: function() {
+      alert('Hey, you create me!');
+
+      this.bind("change:name", function() {
+        var name = this.get("name");
+        alert("You change the name attribute --" + name);
+      });
+
+      this.bind("invalid", function(model, error) {
+        alert(error);
+      });
+
+    },
+
+    defaults: {
+      name: "name",
+      age: 0
+    },
+
+    validate: function(attributes) {
+      if (attributes.name == '') {
+        return "name should not be empty";
+      }
+    },
+
+    aboutMe: function() {
+      return 'my name: ' + this.get('name') + ' my age:' + this.get('age');
+    }
+  });
+
+  $(document).ready(function() {
+    var man = new Man;
+    man.set({
+      name: "Jun",
+      age: 40
+    });
+    alert(man.aboutMe());
+    man.set({
+      name: "test"
+    });
+    man.set({
+      name: ""
+    });
+    man.save();
+  });
+</script>
+
+1. What is the difference between this.get('name') and this.name? this.name directly adds name to the object. this.get('name') accesses the name in attributes of this 2. What is the Model.save()? Save the data back to the server or file. It will initialize
+a POST call
+
+</html>

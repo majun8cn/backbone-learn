@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jun-backbone-model</title>
+</head>
+
+<body>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/underscore-min.js"></script>
+<script src="javascripts/backbone-min.js"></script>
+<script>
+  var Man = Backbone.Model.extend({
+    url:'/mans/',
+
+    initialize: function() {
+      alert('Hey, you create me!');
+
+      this.bind("change:name", function() {
+        var name = this.get("name");
+        alert("You change the name attribute --" + name);
+      });
+
+      this.bind("invalid", function(model, error) {
+        alert(error);
+      });
+
+    },
+
+    defaults: {
+      _id: "",
+      name: "name",
+      age: 0
+    },
+
+    validate: function(attributes) {
+      if (attributes.name == '') {
+        return "name should not be empty";
+      }
+    },
+
+    aboutMe: function() {
+      return 'my name: ' + this.get('name') + ' my age:' + this.get('age');
+    }
+  });
+
+  var Men = Backbone.Collection.extend({
+      model: Man
+  });
+
+  $(document).ready(function() {
+    var men = new Men
+    men.url = '/mans/';
+    men.fetch({
+        success:function(collection, response, options){
+            collection.each(function(man){
+                alert(man.get('name'));
+            });
+        },error:function(collection, response, options){
+            alert('error');
+        }
+    });
+  });
+</script>
+
+</html>

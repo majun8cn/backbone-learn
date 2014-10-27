@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
 });
 
 /* POST mans create a new Man object. http://localhost:3000/mans */
-router.post('/', function(req, res) {
+router.put('/', function(req, res) {
     var man = new Man();
     man.name = req.body.name;
     man.age = req.body.age;
@@ -27,7 +27,8 @@ router.post('/', function(req, res) {
             res.send(err);
 
         res.json({
-            message: "man created"
+            message: "man created",
+            id: man._id
         });
     });
 });

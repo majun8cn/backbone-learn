@@ -55,4 +55,39 @@
   });
 </script>
 
+  Play with a simple Backbone Model:
+
+  <br/>
+    Man = Backbone.Model.extend({
+      url:'/mans/',
+
+      initialize: function() {
+        alert('Hey, you create me!');
+
+        this.bind("change:name", function() {
+          var name = this.get("name");
+          alert("You change the name attribute --" + name);
+        });
+
+        this.bind("invalid", function(model, error) {
+          alert(error);
+        });
+
+      },
+
+      defaults: {
+        name: "name",
+        age: 0
+      },
+
+      validate: function(attributes) {
+        if (attributes.name == '') {
+          return "name should not be empty";
+        }
+      },
+
+      aboutMe: function() {
+        return 'my name: ' + this.get('name') + ' my age:' + this.get('age');
+      }
+    });
 </html>

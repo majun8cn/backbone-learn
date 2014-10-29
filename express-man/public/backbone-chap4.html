@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jun-backbone-router</title>
+</head>
+
+<body>
+    Play with a Backbone Router <br/>
+    <a href="#actions">testActions</a>
+    <a href="#/posts/123">postID</a>
+    <a href="#/download/123">postID</a>
+    <br/>
+        var AppRouter = Backbone.Router.extend({
+            routes: {
+                "posts/:id": "getPost",
+                "download/*path": "downloadFile",
+                "*actions" : "defaultRoute"
+            },
+
+            getPost : function(id) {
+                alert('getPost: ' + id);
+            },
+
+            downloadFile : function(path) {
+                alert('downloadFile: ' + path)
+            },
+
+            defaultRoute : function(actions){
+                alert('default Route: ' + actions);
+            }
+        });
+
+        var app_router = new AppRouter;
+
+        Backbone.history.start();
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/underscore-min.js"></script>
+<script src="javascripts/backbone-min.js"></script>
+<script>
+    var AppRouter = Backbone.Router.extend({
+        routes: {
+            "posts/:id": "getPost",
+            "download/*path": "downloadFile",
+            "*actions" : "defaultRoute"
+        },
+
+        getPost : function(id) {
+            alert('getPost: ' + id);
+        },
+
+        downloadFile : function(path) {
+            alert('downloadFile: ' + path)
+        },
+
+        defaultRoute : function(actions){
+            alert('default Route: ' + actions);
+        }
+    });
+
+    var app_router = new AppRouter;
+
+    Backbone.history.start();
+</script>
+
+</html>

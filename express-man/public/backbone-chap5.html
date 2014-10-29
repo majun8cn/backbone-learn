@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jun-backbone-view</title>
+</head>
+
+<body>
+    Play with a Backbone View
+    <br/>
+        var MenView = Backbone.View.extend({
+              el: "#men_container",
+
+              initialize: function(){
+              },
+
+              render: function(context) {
+                  var template = _.template($("#men_template").html());
+                  $(this.el).html(context));
+              }
+        });
+    <br/>
+    <div id="men_container"></div>
+
+<script type="text/template" id="men_template">
+    <ul>
+    <% _.each(itemset.models, function(item) { %>
+        <li><%= item.get('name') %>:<%= item.get('age') %></li>
+    <% }); %>
+    </ul>
+</script>
+
+<script src="javascripts/jquery.js"></script>
+<script src="javascripts/underscore.js"></script>
+<script src="javascripts/backbone.js"></script>
+<script>
+  var Man = Backbone.Model.extend({
+    url:'/mans/',
+
+    initialize: function() {
+
+      this.bind("change:name", function() {
+        var name = this.get("name");
+        alert("You change the name attribute --" + name);
+      });
+
+      this.bind("invalid", function(model, error) {
+        alert(error);
+      });
+
+    },
+
+    defaults: {
+      _id: "",
+      name: "name",
+      age: 0
+    },
+
+    validate: function(attributes) {
+      if (attributes.name == '') {
+        return "name should not be empty";
+      }
+    },
+
+    aboutMe: function() {
+      return 'my name: ' + this.get('name') + ' my age:' + this.get('age');
+    }
+  });
+
+  var Men = Backbone.Collection.extend({
+      model: Man
+  });
+
+
+  var MenView = Backbone.View.extend({
+        el: "#men_container",
+
+        initialize: function(){
+        },
+
+        render: function(context) {
+            var template = _.template($("#men_template").html());
+            $(this.el).html(template(context));
+        }
+  });
+
+  var men = new Men;
+
+  $(document).ready(function() {
+    men.url = '/mans/';
+    men.fetch({
+        success:function(collection, response, options){
+            collection.each(function(man){
+                //alert(man.get('name'));
+            });
+            var menView = new MenView();
+            menView.render({itemset: men});
+        },
+        error:function(collection, response, options){
+            alert('error');
+        }
+    });
+
+  });
+</script>
+</body>
+</html>
